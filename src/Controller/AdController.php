@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Ad;
 use App\Form\AdType;
+use App\Entity\Image;
 use App\Repository\AdRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,6 +42,11 @@ class AdController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+            foreach($ad->getImages() as $image) {
+                $image->setAd($ad);
+                $manager->persist($image);
+            }
+
             $manager->persist($ad);
             $manager->flush();
 
