@@ -50,19 +50,22 @@
                 </div>
             </div>
             <div class="col">
-                <div class="row">
-                    <div class="col-4">
-                        <img src="http://placeholder.it/64x64" alt="Avatar de Joseph">
+                {% set a = ad.author %}
+                <div class="row nb-3 align-items-center">
+                    <div class="col-3">
+                        <a href="{{ path('user_show', {'slug': a.slug}) }}">
+                            <img src="{{a.picture}}" class="avatar avatar-medium" alt="Avatar de {{a.fullName}}">
+                        </a>
                     </div>
                     <div class="col">
-                        <h3>Joseph Dupont</h3>
-                        <span class="badge badge-primary">3 annonces</span>
+                        <a href="{{ path('user_show', {'slug': a.slug}) }}">
+                            <h3>{{a.fullName}}</h3>
+                        </a>
+                        <span class="badge badge-primary">{{a.ads | length}} annonces</span>
                     </div>
                 </div>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Veritatis harum veniam temporibus at. Accusamus accusantium, maxime voluptate nemo consectetur velit iusto nulla voluptates. Porro aspernatur libero officiis explicabo et accusantium.</p>
-                <p>Numquam aspernatur, provident fugit similique placeat impedit vero sunt, iste laudantium incidunt, reiciendis iure distinctio quo debitis hic quasi quia dignissimos atque. Dolores est consequuntur velit numquam eligendi neque in?</p>
-                <p>Nobis sapiente praesentium quidem, consequatur, quasi, eveniet explicabo alias expedita deleniti iste aspernatur doloribus perferendis neque voluptate aliquid ea necessitatibus reprehenderit nostrum assumenda. Omnis laudantium cumque pariatur vitae reprehenderit quasi?</p>
-            </div>
+                    {{a.description | raw}}
+                </div>
         </div>
     </div>
 {% endblock %}
