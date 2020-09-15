@@ -89,10 +89,17 @@ class User implements UserInterface
      */
     private $userRole;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Booking::class, mappedBy="booker")
+     */
+    private $bookings;
+
     public function __construct()
     {
         $this->ads = new ArrayCollection();
         $this->userRole = new ArrayCollection();
+        $this->bookins = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
     public function getFullName() {
@@ -293,6 +300,37 @@ class User implements UserInterface
         if ($this->userRole->contains($userRole)) {
             $this->userRole->removeElement($userRole);
             $userRole->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Booking[]
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings[] = $booking;
+            $booking->setBooker($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->contains($booking)) {
+            $this->bookings->removeElement($booking);
+            // set the owning side to null (unless already changed)
+            if ($booking->getBooker() === $this) {
+                $booking->setBooker(null);
+            }
         }
 
         return $this;
