@@ -10,7 +10,7 @@
             <h1>{{ad.title}}</h1>
             <p>{{ad.introduction}}</p>
             <p class="h2">
-                <strong>{{ad.room}} chambres</strong> pour <strong>{{ad.price}}</strong>
+                <strong>{{ad.room}} chambres</strong> pour <strong>{{ad.price | number_format(2, ',', ' ')}} &euro; </strong>
                 par nuit
             </p>
             <a href="{{path('booking_create', {'slug': ad.slug})}}" class="btn btn-primary">Réserver !</a>
@@ -54,6 +54,40 @@
                         <span class="sr-only">Next</span>
                     </a>
                 </div>
+
+                <hr>
+
+                {% if ad.comments | length > 0 %}
+                    <h2 class="mb-3">Commentaires de nos voyageurs :</h2>
+
+                    <div class="alert alert-info">
+                        <h4 class="alert-heading text-center">
+                            <div class="row align-item-center">
+                                <div class="col">
+                                    Note globale donnée par nos voyageurs
+                                </div>
+                                <div class="col">
+                                    {% include 'partials/rating.html.twig' with {'rating': ad.avgRatings} %}
+                                    <br>
+                                    <small>(Calculée sur {{ad.comments | length}}) avis</small>
+                                </div>
+                            </div>
+                        </h4>
+                    </div>
+
+                    {% for comment in ad.comments %}
+                        <div class="bg-light rounded mb-3 py-3 px-3">
+                            <strong>{{ comment.author.firstName }}</strong> a dit :
+                            <blockquote>
+                                {{comment.content}}
+                            </blockquote>
+                            <strong>Note donnée : </strong> {{comment.rating}}
+                            {% include 'partials/rating.html.twig' with {'rating': comment.rating} %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <h2>Cette annonce n'a pas encore reçu de commentaires ...</h2>
+                {% endif %}
             </div>
             <div class="col">
                 {% set a = ad.author %}
