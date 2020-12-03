@@ -2,9 +2,11 @@
 
 {% block title %}Modification de l'annonce numéro {{ad.id}}{% endblock %}
 
+{% form_theme form _self %}
+
 {% block body %}
     <div class="container">
-        <h1>Modification de l'annonce numéro {{ad.id}}</h1>
+        <h1 class="my-5">Modification de l'annonce numéro {{ad.id}}</h1>
 
         {{form_start(form)}}
 
@@ -94,4 +96,43 @@
 
         {{form_end(form)}}
     </div>
+{% endblock %}
+
+{% block _ad_images_widget %}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block _ad_images_entry_row %}
+    <div id="block_{{id}}">
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}
+
+{% block _ad_images_entry_widget %}
+    <div class="row align-items-center mb-5">
+        <div class="col-4">
+            {% if value %}
+                <img src="{{value.url}}" alt="" class="img-fluid">
+            {% endif %}
+        </div>
+        <div class="col-6">
+            {{ form_row(form.caption) }}
+        </div>
+        <div class="col">
+            <button type="button" class="btn btn-danger" data-action="delete" data-target="#block_{{id}}">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $('[data-action="delete"]').on('click', function() {
+                const target = this.dataset.target;
+                $(target).remove();
+            });
+        });
+    </script>
 {% endblock %}
