@@ -6,6 +6,7 @@ use App\Entity\Ad;
 use App\Form\AdType;
 use App\Entity\Image;
 use App\Repository\AdRepository;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,7 +38,7 @@ class AdController extends AbstractController
      *
      * @return Response
      */
-    public function create(Request $request, EntityManagerInterface $manager){
+    public function create(Request $request, ObjectManager $manager){
         $ad = new Ad;
 
         $form = $this->createForm(AdType::class, $ad);
@@ -102,10 +103,10 @@ class AdController extends AbstractController
      * @security("is_granted('ROLE_USER') and user == ad.getAuthor()", message="Vous n'avez pas le droit d'accéder à cette ressource")
      *
      * @param Ad $ad
-     * @param EntityManagerInterface $manager
+     * @param ObjectManager $manager
      * @return Response
      */
-    public function delete(Ad $ad, EntityManagerInterface $manager) {
+    public function delete(Ad $ad, ObjectManager $manager) {
         $manager->remove($ad);
         $manager->flush();
 

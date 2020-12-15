@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use Twig\Environment;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -15,7 +16,7 @@ class PaginationService {
     private $route;
     private $templatePath;
 
-    public function __construct(EntityManagerInterface $manager, Environment $twig, RequestStack $request, $templatePath) {
+    public function __construct(ObjectManager $manager, Environment $twig, RequestStack $request, $templatePath) {
         $this->route = $request->getCurrentRequest()->attributes->get('_route');
         $this->manager = $manager;
         $this->twig = $twig;

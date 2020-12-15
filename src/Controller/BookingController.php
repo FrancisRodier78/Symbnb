@@ -7,6 +7,7 @@ use App\Entity\Booking;
 use App\Entity\Comment;
 use App\Form\BookingType;
 use App\Form\CommentType;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,7 +20,7 @@ class BookingController extends AbstractController
      * @Route("/ads/{slug}/book", name="booking_create")
      * @IsGranted("ROLE_USER")
      */
-    public function book(Ad $ad, Request $request, EntityManagerInterface $manager)
+    public function book(Ad $ad, Request $request, ObjectManager $manager)
     {
         $booking = new Booking();
         $form = $this->createForm(BookingType::class, $booking);
@@ -59,10 +60,10 @@ class BookingController extends AbstractController
      *
      * @param Booking $booking
      * @param Request $request
-     * @param EntityManagerInterface $manager
+     * @param ObjectManager $manager
      * @return Response
      */
-    public function show(Booking $booking, Request $request, EntityManagerInterface $manager) {
+    public function show(Booking $booking, Request $request, ObjectManager $manager) {
         $comment = new Comment();
 
         $form = $this->createForm(CommentType::class, $comment);
