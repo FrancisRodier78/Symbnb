@@ -20,8 +20,6 @@ class StatsService {
         return compact('user', 'ads', 'bookings', 'comments');
     }
 
-
-
     public function getUserCount() {
         return $this->manager->createQuery('SELECT count(u) FROM App\Entity\User u')->getSingleScalarResult();
     }
@@ -38,5 +36,16 @@ class StatsService {
         return $this->manager->createQuery('SELECT count(c) FROM App\Entity\Comment c')->getSingleScalarResult();
     }
 
-
+    public function getAdsStat($direction) {
+        return $this->manager->createQuery(
+            'SELECT AVG(c.rating) as note, a.title, a.id, u.firstName, u.lastName, u.picture
+            FROM App\Entity\Comments c
+            JOIN c.ad a
+            JOIN a.author u
+            GROUP BY a
+            ORDER BY note ' . $direction
+            )
+            ->setMaxResults(5)
+            ->getResult();
+    }
 }

@@ -15,30 +15,10 @@ class AdminDashboardController extends AbstractController
      */
     public function index(ObjectManager $manager, StatsService $statsService): Response
     {
-        $stats = $statsService->getStats();
-
-        $bestAds = $manager->createQuery(
-            'SELECT AVG(c.rating) as note, a.title, a.id, u.firstName, u.lastName, u.picture
-            FROM App\Entity\Comments c
-            JOIN c.ad a
-            JOIN a.author u
-            GROUP BY a
-            ORDER BY note DESC'
-            )
-            ->setMaxResults(5)
-            ->getResult();
-
-        $worstAds = $manager->createQuery(
-            'SELECT AVG(c.rating) as note, a.title, a.id, u.firstName, u.lastName, u.picture
-            FROM App\Entity\Comments c
-            JOIN c.ad a
-            JOIN a.author u
-            GROUP BY a
-            ORDER BY note ASC'
-            )
-            ->setMaxResults(5)
-            ->getResult();
-
+        $stats    = $statsService->getStats();
+        $bestAds  = $statsService->getAdsStat('DESC');
+        $worstAds = $statsService->getAdsStat('ASC');
+        
         return $this->render('admin/dashboard/index.html.twig', [            
             'stats' => $stats,
             'bestAds' => $bestAds,
